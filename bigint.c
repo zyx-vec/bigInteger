@@ -89,8 +89,6 @@ BigInt add(char *m, char *n) {
 		min = strlen(m);
 	}
 
-	//printf("%s\n%s\n%d\n", n, m, min);
-
 	int i = 0, carry = 0, out;
 	for (; i < length; i++) {
 		if (i < min) {
@@ -111,7 +109,6 @@ BigInt add(char *m, char *n) {
 		i++;
 	}
 	sum[i] = '\0';
-	//printf("sum = %s\n", sum);
 
 	BigInt re;
 	strcpy(re.decimal, sum);
@@ -130,7 +127,6 @@ BigInt sub(char *a, char *b) {
 		strcpy(tmp, m);
 		strcpy(m, n);
 		strcpy(n, tmp);
-		//printf("sub: %s %s\n", m, n);
 	}
 	int length = strlen(m);
 	int min = strlen(n);
@@ -213,8 +209,6 @@ QR divd(char *a, char *b) {
 	QR re;
 	int len = strlen(m), len1 = strlen(n);
 	int i = 0, j = 0;
-
-	//mark[3] = 0;
 	// m < n
 	if ( compare(m, n) < 0 ) {
 		char zero[] = "0";
@@ -237,11 +231,8 @@ QR divd(char *a, char *b) {
 		char tmp[MAX];	// normal order of n
 		strcpy(tmp, n);
 		strrev(tmp);
-		//printf("%s %s\n", tmp, curr);
 
 		while (index < len) {
-			// char s1[] = "1223", s2[] = "34452352352345321";
-			// TODO: eat
 			 do {
 				if (curr_len == 0) {
 					if (m[len-1-index] != '0') {
@@ -256,11 +247,8 @@ QR divd(char *a, char *b) {
 				}
 				index++;
 			} while (compare_normal(curr, tmp) < 0 && index < len);
-				
-			//printf("%d: %s\n", index-1, curr);
 
 			if (compare_normal(curr, tmp) < 0) {	// can't eat any more
-				//printf("haha\n");
 				if (curr_len == 0) {
 					strcpy(re.r, zero);
 				} else {
@@ -282,16 +270,11 @@ QR divd(char *a, char *b) {
 			} while ( compare(att.decimal, curr) <= 0 );
 			
 			mark[index-1] = inr[0]-'1';
-			//printf("index: %d, mark: %d\n", index-1, mark[index-1]);
 
-			//printf("-%s - %s\n", curr, old);
 			if (compare(curr, old) < 0) {
 				printf("...\n");
 			}
-			//printf("curr = %s\n old = %s\n", curr, old);
 			att = sub(curr, old);
-			//printf("index = %d, att = %s\n", index-1, att.decimal);
-			
 			if ( index == len ) {	// over
 				strcpy(re.r, att.decimal);
 				break;
@@ -305,24 +288,20 @@ QR divd(char *a, char *b) {
 					strrev(curr);
 				}
 				curr_len = strlen(curr);
-				//printf("curr = %s\n", curr);
 			}
 		}
 
 		for (i = 0; i < len; i++) {
-			//printf("%d ", mark[i]);
 			if (mark[i] != 0)
 				break;
 		}
 		int count = 0;
 		for (; i < len; i++) {
-			//printf("%d ", mark[i]);
 			re.q[count] = mark[i] + '0';
 			count++;
 		}
 		re.q[count] = '\0';
 		strrev(re.q);
-		//printf("\n");
 	}
 
 	return re;
@@ -362,16 +341,14 @@ void to_binary(BigInt *n) {
 	}
 	k += INT(qr.q[0]);
 	(*n).binary[c] = k;
-	/*
+	
 	printf("base is 1024! reverse order\n");
 	for (i = 0; i <= c; i++) {
 		printf("%d ", (*n).binary[i]);
-	}*/
+	}
 	char s[15];
 	itoa(k, s, 2);
 	(*n).len_b = c*10 + strlen(s);
-	//printf("\n");
-	//printf("\nbits number: %d\n", (*n).len_b);
 }
 
 int bit(BigInt *n, int i) {
@@ -384,8 +361,6 @@ int bit(BigInt *n, int i) {
 	return ((*n).binary[table] & (1 << (offset-1))) >> (offset-1);
 }
 
-
-/*
 int main() {
 	char s1[MAX] = "2", s2[MAX] = "7001";
 	int n1, n2;
@@ -432,4 +407,3 @@ int main() {
 	
 	return 0;
 }
-*/
